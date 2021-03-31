@@ -4,6 +4,8 @@ require_relative 'node'
 
 # Class defining the methods necessary to create a balanced binary search tree.
 class Tree
+  attr_reader :root
+
   def initialize(array)
     @root = build_tree(sort_array(array))
   end
@@ -26,4 +28,24 @@ class Tree
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
     pretty_print(node.left_child, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left_child
   end
+
+  def insert(value, root = @root)
+    return Node.new(value) if root.nil?
+    if root.data == value
+      root
+    elsif root.data > value
+      root.left_child = insert(value, root.left_child)
+    else root.data < value
+      root.right_child = insert(value, root.right_child)
+    end
+    root
+  end
 end
+
+tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+
+tree.pretty_print
+
+tree.insert(20)
+
+tree.pretty_print
